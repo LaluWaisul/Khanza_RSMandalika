@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Data Pasien
+{% endblock title %}
+
+{% block css %}
+
+{% endblock css %}
+
+{% block navigation %}
+<li class="nav-item d-none d-sm-inline-block">
+    <a href="index3.html" class="nav-link">pasien</a>
+</li>
+<li class="nav-item d-none d-sm-inline-block">
+    <a href="#" class="nav-link">Pengkajian</a>
+</li>
+<li class="nav-item d-none d-sm-inline-block">
+    <a href="#" class="nav-link">Pemeriksaan</a>
+</li>
+<li class="nav-item d-none d-sm-inline-block">
+    <a href="#" class="nav-link">Tindakan</a>
+</li>
+{% endblock navigation %}
+
+{% block cardtitle %}
+<strong>Data Pasien</strong>
+{% endblock cardtitle %}
+
+{% block content %}
+<div class="row m-5">
+    <div class="table table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>No Rawat</th>
+                    <th>RM</th>
+                    <th>Nama Pasien</th>
+                    <th>Tanggal</th>
+                    <th>Jam</th>
+                    <th>Poliklinik</th>
+                    <th>Dokter</th>
+                    <th>Aksi</th>
+                </tr>
+              
+            </thead>
+            <tbody id="pasien">
+                
+                <tr
+                    v-for="dt in pasien"
+                    v-bind:key="dt.no_rawat"
+                >
+                    <td>[[dt.no_rawat]]</td>
+                    <td>[[dt.no_rkm_medis.no_rkm_medis]]</td>
+                    <td>[[dt.no_rkm_medis.nm_pasien]]</td>
+                    <td>[[dt.tgl_registrasi]]</td>
+                    <td>[[dt.jam_reg]]</td>
+                    <td>[[dt.kd_poli]]</td>
+                    <td>[[dt.kd_dokter]]</td>
+                    <td>
+                        <a href="#" class="btn btn-warning">Pengkajian Ranap</a>
+                    </td>
+                </tr>
+                
+            </tbody>
+        </table>
+        {% comment %} <template v-if="showPrevButton">
+            <button @click="loadPrev()" class="btn btn-outline-info">Prev</button>
+        </template>
+        <template v-if="showNextButton">
+            <button @click="loadNext()" class="btn btn-outline-info">Next</button>
+        </template> {% endcomment %}
+    </div>
+    <div class="pagination">
+        <span class="step-links">
+            {% if pasien.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ pasien.previous_page_number }}">previous</a>
+            {% endif %}
+    
+            <span class="current">
+                Page {{ pasien.number }} of {{ pasien.paginator.num_pages }}.
+            </span>
+    
+            {% if pasien.has_next %}
+                <a href="?page={{ pasien.next_page_number }}">next</a>
+                <a href="?page={{ pasien.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block script %}
+
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+<script>
+    
+</script>
+<script>
+    let params = new URLSearchParams(document.location.search);
+    var page = params.get('page');
+
+    const Pasiens = {
+        data(){
+            return{
+                pasien: [],
+                currentPage: 1,
+                showNextButton: false,
+                showPrevButton: false
+            }
+        },
+        delimiters: ['[[', ']]'],
+        mounted(){
+            this.getPatients()
+        },
+        methods:{
+            getPatients(){
+                page? this.currentPage = page : this.currentPage
+                fetch(`/ralan/daftarpasienapi/?page=${this.currentPage}`)
+                .then(response =>{
+                    return response.json()
+                })
+                .then(data=>{
+                    console.log(data)
+                    this.pasien = data.results
+                })
+                .catch(error=>{
+                    console.log(error)
+                })
+            }
+        }
+    }
+    Vue.createApp(Pasiens).mount('#pasien')
+</script>
+
+{% endblock script %}

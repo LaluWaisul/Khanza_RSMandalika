@@ -1,0 +1,52 @@
+.nav-item .nav-link .active{
+    border-bottom: 4px solid grey;
+    font-weight: bold;
+    width: 100px;
+    height: 50px;
+    background-color: red;
+}
+
+.selected-data{
+    margin: 0px 0px 50px 50px;
+    position: absolute;
+
+}
+
+.selected-data .data{
+    border: solid 1px grey;
+    padding: 10px 30px 10px 10px;
+}
+
+.selected-data .data .close{
+    font-size: 12px;
+    margin-left: -30px;
+    padding-right: 10px;
+    display: hidden;
+}
+
+.selected-data .data .close:hover{
+    display: block;
+    cursor: pointer;
+}
+
+.pasien-form{
+    margin-left: 50px;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+}
+
+
+.progressdata{
+    border: 4px solid red;
+    z-index: 9999;
+    width: 200px;
+}
+
+.progress-step{
+    width: 35px;
+    height: 35px;
+    background-color: red;
+    border-radius: 50%;
+}
+

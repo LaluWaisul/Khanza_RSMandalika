@@ -1,0 +1,50 @@
+{% extends 'pasien_base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+Info TT
+{% endblock title %}
+
+{% block css %}
+
+{% endblock css %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="table table-responsive">
+            <table class="table" id="kematian">
+                <thead>
+                    <tr>
+                        <th>Kasus</th>
+                        <th>Kasus</th>
+                        <th>Mati</th>
+                        <th>Mati</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block script %}
+<script>
+    $(document).ready(function () {
+        $('#kematian').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf'
+            ]
+        });
+    });
+</script>
+
+
+{% endblock script %}

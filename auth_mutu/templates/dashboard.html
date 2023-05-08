@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+Dashboard
+{% endblock title %}
+
+{% block css %}
+
+{% endblock css %}
+
+{% block cardtitle %}
+<strong>Dashboard</strong>
+{% endblock cardtitle %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12" style="display:flex, justifycontent:center, alignitems:center">
+       <center> <h4>Tampilan Dashboard masih menunggu usulan jenis dan bentuk data yang akan ditampilkan</h4></center>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block script %}
+<script>
+    $(document).ready(function () {
+        $('#kematian').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf'
+            ]
+        });
+    });
+</script>
+
+
+{% endblock script %}

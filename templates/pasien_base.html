@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+{% load static %}
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>RS Mandalika {% block title %}| {% endblock title %}</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="{% static 'plugins/fontawesome-free/css/all.min.css' %}">
+        <!-- Ionicons -->
+        <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+        <link rel="stylesheet" href="{% static 'dist/css/adminlte.min.css' %}">
+        <!-- Google Font: Source Sans Pro -->
+        <!-- Google Font: Source Sans Pro -->
+        <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+        <link rel="stylesheet" href="{% static 'plugins/DataTables-1.10.22/css/jquery.dataTables.min.css' %}">
+        <link rel="stylesheet" href="{% static 'plugins/datatables/Buttons-1.6.5/css/buttons.dataTables.min.css' %}">
+        {% block css %} {% endblock css %}
+    </head>
+    <body>
+        
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <a href="{% static 'images/ntb.png' %}" class="brand-link">
+                <img src="{% static 'images/ntb.png' %}" alt="simpoan logo" class="brand-image img-circle elevation-3"
+                    style="opacity: .8"/>
+                <span class="brand-text font-weight-light">RS Mandalika</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+              <ul class="navbar-nav">
+                <li class="nav-item active">
+                  <a class="nav-link" href="#">Registrasi <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">Informasi Tempat Tidur</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">Jadwal Dokter</a>
+                </li>
+              </ul>
+            </div>
+          </nav>
+        
+        <div>
+          {% include 'common/messages.html' %}
+          {% block content %} {% endblock content %}
+        </div>
+        <!-- Bootstrap 4 -->
+        <script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
+        <script src="{% static 'plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+        <script>
+          $('.alert').alert()
+          setTimeout(function () {
+              if ($('#msg').length > 0) {
+                  $('#msg').remove();
+              }
+          }, 7000)
+      </script>
+    </body>
+</html>

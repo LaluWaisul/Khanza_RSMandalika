@@ -1,0 +1,344 @@
+{% extends './akreditasi.html' %}
+
+{% block btn_akreditasi %}
+
+
+{% endblock %}
+
+{% block modal %}
+
+{% endblock %}
+
+{% block akreditasi %}
+<div>
+    <h3>Dashboard</h3>
+    
+    <div class="row mt-3">
+        <div class="col-md-5 d-flex align-self-center">
+            <canvas id="akreditasiChart"></canvas>
+        </div>
+        <div class="col-md-7 d-flex align-self-center">
+            <canvas id="pokjaChart"></canvas>
+        </div>
+    </div>
+    <div class="row mb-3 mt-5">
+        <div class="col-sm-4">
+            <form>
+                <select class="form-control" id="pokjaselector" name="pokja">
+                    {% if currentpokja %}
+                    <option value="{{currentpokja.id}}">{{currentpokja.nama}}</option>
+                    {% else %}
+                    <option value="">-- Pilih Pokja --</option>
+                    {% endif %}
+                    {% for item in pokja %}
+                    <option value={{item.id}}>{{item.nama}}</option>
+                    {% endfor %}
+                </select>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6" id="chart-container">
+            <canvas id="standardChart"></canvas>
+        </div>
+        <div class="col-md-5 mt-1 ml-2">
+            <h3>File Dalam Pokja Terpilih <i class="fas fa-arrow-right"></i> <b><span id="title-pokja">TKRS</span></b></h3>
+            <div class="table table-responsive" id="static">
+                <table class="table" id="datasearch">
+                    <thead>
+                        <tr>
+                            <th>Nama File</th>
+                            <th>Status</th>
+                            <th>Standar</th>
+                            <th>Tahun</th>
+                        </tr>
+                      
+                    </thead>
+                    <tbody id="idfile-static">
+                        
+                    </tbody>
+                </table>
+            </div>
+            <div class="table table-responsive" id="dynamic">
+                <table class="table" id="datasearch">
+                    <thead>
+                        <tr>
+                            <th>Nama File</th>
+                            <th>Status</th>
+                            <th>Standar</th>
+                            <th>Tahun</th>
+                        </tr>
+                      
+                    </thead>
+                    <tbody id="idfile-dynamic">
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+    //GRAFIK CAPAIAN AKREDITASI
+    $(document).ready(function () {
+       
+        var akreditasistandar = '/akreditasi/nilaiakreditasi/'
+        $.ajax({
+            method: "GET",
+            url: akreditasistandar,
+            success: function (data) {
+                labels = data.label
+                values = data.data
+                background = data.backgroundcolor
+                setAkreditasi()
+            },
+            error: function (error_data) {
+                console.log("error")
+                console.log(error_data)
+            }
+        })
+
+    })
+
+    function setAkreditasi() {
+        var ctx = $('#akreditasiChart')
+        //var ctx = document.getElementById("myChart").getContext('2d');
+        var pokjaChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: labels,
+                datasets: [{
+                    data: values,
+                    backgroundColor: [
+                        'rgba(0, 255, 0, 0.2)',
+                        'rgba(255, 0, 0, 0.2)',
+                    ],
+                }]
+            },
+            options: {
+                
+            }
+        })
+    };
+</script>
+<script>
+    //GRAFIK POKJA AKREDITASI
+    //let params = new URLSearchParams(document.location.search.substring(1));
+    //let pokja = params.get("pokja");
+    //var e = document.getElementById("pokjaselector");
+    $(document).ready(function () {
+        var akreditasistandar = '/akreditasi/nilaipokja/'
+        $.ajax({
+            method: "GET",
+            url: akreditasistandar,
+            success: function (data) {
+                labels = data.label
+                values = data.data
+                background = data.backgroundcolor
+                setPokja()
+            },
+            error: function (error_data) {
+                console.log("error")
+                console.log(error_data)
+            }
+        })
+
+    })
+   
+
+    function setPokja() {
+        //removeData()
+        //var ctx = $('#pokjaChart')
+        var ctx = document.getElementById("pokjaChart").getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    axis: 'y',
+                    label: '# Pokja Akreditasi',
+                    data: values,
+                    backgroundColor: background,
+                    borderColor: background,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+    }
+    
+</script>
+
+<script>
+    // GRAFIK STANDAR AKREDITASI
+    $(document).ready(function () {
+        var akreditasistandar = '/akreditasi/apidashboard/'
+        $.ajax({
+            method: "GET",
+            url: akreditasistandar,
+            success: function (data) {
+                labels = data.label
+                values = data.data
+                background = data.backgroundcolor
+                setChart()
+            },
+            error: function (error_data) {
+                console.log("error")
+                console.log(error_data)
+            }
+        })
+
+    })
+   
+    $(document).on('change', '#pokjaselector' ,function () {
+        var pokja = $(this).val();
+        if (pokja){
+            var akreditasistandar = '/akreditasi/apidashboard/?pokja='+pokja
+        }
+        $.ajax({
+            method: "GET",
+            url: akreditasistandar,
+            success: function (data) {
+                labels = data.label
+                values = data.data
+                background = data.backgroundcolor
+                setChart()
+            },
+            error: function (error_data) {
+                console.log("error")
+                console.log(error_data)
+            }
+        })
+    })
+    
+    function setChart() {
+        //removeData()
+        $('#standardChart').remove();
+        $('#chart-container').html('<canvas id="standardChart"></canvas>');
+        var ctx = $('#standardChart')
+        //var ctx = document.getElementById("myChart").getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    axis: 'y',
+                    label: '# Standar Pokja Akreditasi',
+                    data: values,
+                    backgroundColor: background,
+                    borderColor: background,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+    }
+</script>
+
+<script>
+    //TABEL ELEMENT PENILAIAN
+    var tbody_dynamic = document.querySelector("#idfile-dynamic");
+    var tbody_static = document.querySelector("#idfile-static");
+
+    var static = document.querySelector("#static");
+    var dynamic = document.querySelector("#dynamic");
+    dynamic.style.display="none";
+    var file = '/akreditasi/dashboardfile/'
+    $(document).ready(function () {
+        $.ajax({
+            method: "GET",
+            url: file,
+            error: function (error_data) {
+                console.log("error")
+                console.log(error_data)
+            }
+        })
+        .done(function(data){
+            console.log('ini data file: ',data)
+            if(data.length===0){
+                tbody_static.innerHTML+='<tr><td colspan="5">No Result Found</td></tr>'
+            }else{
+                data.forEach((item)=>{
+                    tbody_static.innerHTML+=`
+                    <tr>
+                        <td>
+                            ${item.nama}                                    
+                        </td>
+                        <td>${item.status}</td>
+                        <td>${item.kategori.element.standar.nama}</td>
+                        <td>${new Date(item.kategori.tahun).getFullYear()}</td>
+                    </tr>
+                    `;
+                })
+            }
+        })
+    })
+    
+    $(document).on('change', '#pokjaselector' ,function () {
+        var pokja = $(this).val();
+        var pokjatext = $("#pokjaselector option:selected").text();
+        console.log(pokjatext);
+        if (pokja){
+            tbody_static.innerHTML="";
+            tbody_dynamic.innerHTML="";
+            file = '/akreditasi/dashboardfile/?pokja='+pokja
+        }
+        $.ajax({
+            method: "GET",
+            url: file,
+            error: function (error_data) {
+                console.log("error")
+                console.log(error_data)
+            }
+        })
+        .done(function(data){
+            static.style.display="none";
+            dynamic.style.display="block";
+            console.log('ini data dipilih: ',data)   
+            if(data.length===0){
+                tbody_dynamic.innerHTML+='<tr><td colspan="5">No Result Found</td></tr>'
+                $("#title-pokja").html(pokjatext);
+            }else{
+                $("#title-pokja").html(pokjatext);
+                data.forEach((item)=>{
+                    tbody_dynamic.innerHTML+=`
+                    <tr>
+                        <td>
+                            ${item.nama}                                    
+                        </td>
+                        <td>${item.status}</td>
+                        <td>${item.kategori.element.standar.nama}</td>
+                        <td>${new Date(item.kategori.tahun).getFullYear()}</td>
+                    </tr>
+                    `;
+                })
+            }
+        })
+    })
+</script>
+
+<script>
+
+</script>
+{% endblock script %}

@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Profil
+{% endblock title %}
+
+{% block content %}
+<!-- Profile Image -->
+<div class="card card-primary card-outline">
+    <div class="card-body box-profile">
+        <div class="mb-4 text-center">
+            {% if request.user.profil_user.foto %}
+            <div>
+                <img class="profile-user-img img-fluid img-circle" src="{{request.user.profil_user.foto.url}}"
+                    alt="User profile picture">
+            </div>
+            {% else %}
+            <div>
+                <img class="profile-user-img img-fluid img-circle" src="{% static 'images/user2.png' %}"
+                    alt="User profile picture">
+            </div>
+            {% endif %}
+            <p class="text-muted text-center"><b>{{ user.first_name }} {{ user.last_name }}</b> </p>
+        </div>
+        <div class="d-flex justify-content-start">
+            <div class="col-md-12 table-responsive">
+                <table class="table table-striped">
+                    <tr>
+                        <td>
+                            <h3 class="profile-username"> Nama </h3>
+                        </td>
+                        <td>
+                            <h3 class="profile-username">{{ user.first_name }} {{ user.last_name }}</h3>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h3 class="profile-username"> Email </h3>
+                        </td>
+                        <td>
+                            <h3 class="profile-username">{{ user.email }}</h3>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h3 class="profile-username"> No Kontak </h3>
+                        </td>
+                        <td>
+                            <h3 class="profile-username">{{ profil.no_hp }}</h3>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h3 class="profile-username"> Alamat </h3>
+                        </td>
+                        <td>
+                            <h3 class="profile-username">{{ profil.alamat }}</h3>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h3 class="profile-username"> Pendidikan </h3>
+                        </td>
+                        <td>
+                            <h3 class="profile-username">{{ profil.pendidikan }}</h3>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h3 class="profile-username"> Jabatan </h3>
+                        </td>
+                        <td>
+                            <h3 class="profile-username">{{ profil.jabatan }}</h3>
+                        </td>
+                    </tr>
+
+                </table>
+            </div>
+        </div>
+        <div class="card-footer">
+            <a href="{% url 'myaccount:edit_profil' id=user.id %}" class="btn btn-info">Edit Profil</a>
+            <a href="{% url 'myaccount:edit_pass' %}" class="btn btn-dark">Ganti Password</a>
+        </div>
+
+    </div>
+    <!-- /.card-body -->
+</div>
+<!-- /.card -->
+{% endblock content %}

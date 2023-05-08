@@ -1,0 +1,12 @@
+.progressdata {
+    position: relative;
+    background-color: blue;
+}
+
+.progress-step{
+    width: 2.1875rem;
+    height: 2.1875rem;
+    background-color: red;
+    border-radius: 50%;
+}
+

@@ -1,0 +1,102 @@
+{% extends './akreditasi.html' %}
+
+{% block btn_akreditasi %}
+<div class="d-flex flex-row-reverse mb-1">
+    {% if user == "admin" %}
+    <div class="d-flex flex-row-reverse ">
+        <a href="{% url 'akreditasiurls:tambah_pokja' %}?list={{display}}" class="btn btn-outline-success mr-2" data-toggle="tooltip" data-placement="auto" title="Tambah Folder"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
+    </div>
+    {% endif %}
+    <div class="d-flex flex-row-reverse ">
+        <div class="col-sm-12">
+            <form method="get">
+                <select class="form-control" id="exampleFormControlSelect1" onchange="this.form.submit()" name="list">
+                    {% if display == "list" %}
+                        <option value={{display}}>List</option>
+                        <option value="icon">Large Icons</option>
+                        <option value="detail">Detail</option>
+                    {% elif display == "icon" %}
+                        <option value={{display}}>Large Icons</option>
+                        <option value="list">List</option>
+                        <option value="detail">Detail</option>
+                    {% elif display == "detail" %}
+                        <option value={{display}}>Detail</option>
+                        <option value="list">List</option>
+                        <option value="icon">Large Icons</option>
+                    {% else %}
+                        <option value="">--- Pilih Tampilan ---</option>
+                        <option value="list">List</option>
+                        <option value="icon">Large Icons</option>
+                        <option value="detail">Detail</option>
+                    {% endif %}
+                </select>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block akreditasi %}
+{% if data %}
+<div>
+    {% if display == "list" %}
+    {% for dt in data %}
+    <a class="d-flex flex-row p-3" href="{% url 'akreditasiurls:standar_view' id=dt.id %}">
+        <i class="fa fa-folder fa-2x mr-3" style="color:#fca903" aria-hidden="true"></i>
+        <span class="text-center text-dark">{{dt.nama}}</span>
+    </a>
+    {% endfor %}
+    {% elif display == "icon" %}
+    {% for dt in data %}
+    <div class="d-inline-flex flex-column p-5">
+        <i class="fa fa-folder fa-10x" style="color:#fca903" aria-hidden="true"></i>
+        <span class="text-center">{{dt.nama}}</span>
+    </div>
+    {% endfor %}    
+    {% elif display == "detail" %}
+    <div class="table table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nama Pokja</th>
+                    <th>Jumlah Standar</th>
+                    <th>Aksi</th>
+                </tr>
+              
+            </thead>
+            <tbody>
+                {% for dt in data %}
+                <tr>
+                    <td>
+                        <div class="d-flex flex-row">
+                            <a href="{% url 'akreditasiurls:standar_view' id=dt.id %}" class="text-dark">
+                                <i class="fa fa-folder fa-2x mr-3" style="color:#fca903" aria-hidden="true"></i>
+                                <span class="text-center">{{dt.nama}}</span>
+                            </a>
+                        </div>
+                    </td>
+                    <td>{{dt.standarakreditasi_set.all|length}}</td>
+                    <td>
+                        <a href="{% url 'akreditasiurls:edit_pokja' id=dt.id %}?list={{display}}" class="btn btn-warning">Edit</a>
+                    </td>
+                </tr>
+                {% endfor %}  
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+    
+</div>
+{% else %}
+<center><strong>Silahkan tentukan POKJA anda terlebih dahulu <br/> Untuk memilih pokja silahkan hubungi admin</strong></center>
+{% endif %}
+{% endblock %}
+
+{% block script %}
+<script>
+    $( "#searchdata" ).keyup(function() {
+        alert( "Handler for .keyup() called." );
+    });
+</script>
+{% endblock script %}

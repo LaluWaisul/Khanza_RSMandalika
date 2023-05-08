@@ -1,0 +1,59 @@
+{% extends './base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+Departement
+{% endblock title %}
+
+{% block css %}
+
+{% endblock css %}
+
+{% block cardtitle %}
+<strong>Data Departement</strong>
+{% endblock cardtitle %}
+
+{% block content %}
+
+<a href="#" class="btn btn-info mb-3">Export to PDF</a>
+{% block btn_authbangsal %}
+
+{% endblock %}
+
+<div class="row">
+    <div class="col-md-12">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+              <a class="nav-link {% if sub1 == 'active' %} active {% endif %}" aria-current="page" href="{% url 'auth_bangsal:departement_view' %}">Departemen</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link {% if sub2 == 'active' %} active {% endif %}"  href="{% url 'auth_bangsal:bidang_view' %}">Bidang</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link {% if sub3 == 'active' %} active {% endif %}"  href="{% url 'auth_bangsal:bangsal_view' %}">Bangsal</a>
+            </li>
+            
+        </ul>
+    
+            {% block bangsal %}
+            
+            {% endblock %}
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block script %}
+<script>
+    $(document).ready(function () {
+        $('#kematian').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf'
+            ]
+        });
+    });
+</script>
+
+
+{% endblock script %}

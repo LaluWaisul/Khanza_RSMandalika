@@ -1,0 +1,296 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+Pengkajian Data
+{% endblock title %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'dist/css/pengkajian.css'%}">
+{% endblock css %}
+
+{% block navigation %}
+<li class="nav-item d-none d-sm-inline-block">
+    <a href="index3.html" class="nav-link">pasien</a>
+</li>
+<li class="nav-item d-none d-sm-inline-block">
+    <a href="#" class="nav-link">Pengkajian</a>
+</li>
+<li class="nav-item d-none d-sm-inline-block">
+    <a href="#" class="nav-link">Pemeriksaan</a>
+</li>
+<li class="nav-item d-none d-sm-inline-block">
+    <a href="#" class="nav-link">Tindakan</a>
+</li>
+{% endblock navigation %}
+
+{% block cardtitle %}
+<strong>Pengkajian Data</strong>
+{% endblock cardtitle %}
+
+{% block content %}
+<div class="row identitas">
+    <div class="col-md-4">
+        <div class='form-group row'>
+            <div class='col-4'>No Rawat</div>
+            <div class='col-8'>{{obj.no_rawat}}</div>    
+        </div>
+        <div class='form-group row'>
+            <div class='col-4'>NIK</div>
+            <div class='col-8'>{{obj.no_rkm_medis.no_ktp}}</div>    
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class='form-group row'>
+            <div class='col-4'>Nama</div>
+            <div class='col-8'>{{obj.no_rkm_medis.nm_pasien}}</div>    
+        </div>
+        <div class='form-group row'>
+            <div class='col-4'>Tempat/Tgl Lahir</div>
+            <div class='col-8'>{{obj.no_rkm_medis.tmp_lahir}} / {{obj.no_rkm_medis.tgl_lahir}}</div>    
+        </div>
+    </div>
+</div>
+
+<div class="progressbar mt-5 mb-5">
+    <div class="progress" id="progress"></div>
+    <div class="progress-step progress-step-active" data-title="Riwayat"></div>
+    <div class="progress-step" data-title="Pemeriksaan Fisik"></div>
+    <div class="progress-step" data-title="Riwayat Holistik"></div>
+    <div class="progress-step" data-title="Pengkajian Fungsi"></div>
+    <div class="progress-step" data-title="Skala Nyeri"></div>
+    <div class="progress-step" data-title="Risiko Jatuh"></div>
+</div>
+
+<form>
+    <div id="riwayat" class="form-step form-step-active">
+        <div class="form-row">
+            <div class="form-group col-md-4 mb-0">
+                {{ form.no_rawat|as_crispy_field }}
+            </div>
+            <div class="form-group col-md-4 mb-0">
+                {{ form.tanggal|as_crispy_field }}
+            </div>
+            <div class="form-group col-md-4 mb-0">
+                {{ form.informasi|as_crispy_field }}
+            </div>
+        </div>
+        {{ form.keluhan_utama|as_crispy_field }}
+        <div class="form-row">
+            <div class="form-group col-md-6 mb-0">
+                {{ form.rpd|as_crispy_field }}
+            </div>
+            <div class="form-group col-md-6 mb-0">
+                {{ form.rpo|as_crispy_field }}
+            </div>
+        </div>
+        <hr>
+        <div class="form-row">
+            <div class="form-group col-md-8 mb-0">
+                {{ form.status_kehamilan|as_crispy_field }}
+            </div>
+            <div class="form-group col-md-4 mb-0">
+                {{ form.gravida|as_crispy_field }}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-4 mb-0">
+                {{ form.para|as_crispy_field }}
+            </div>
+            <div class="form-group col-md-4 mb-0">
+                {{ form.abortus|as_crispy_field }}
+            </div>
+            <div class="form-group col-md-4 mb-0">
+                {{ form.hpht|as_crispy_field }}
+            </div>
+        </div>
+        <button class="btn btn-outline-info btn-next">Selanjutnya</button>
+    </div>
+    <div id="fisik" class="form-step mt-5">
+        <div class="form-row">
+            <div class="form-group col-md-3 mb-0">
+                {{ form.tekanan|as_crispy_field }}
+            </div>
+            <div class="form-group col-md-3 mb-0">
+                {{ form.pupil|as_crispy_field }}
+            </div>
+            <div class="form-group col-md-3 mb-0">
+                {{ form.neurosensorik|as_crispy_field }}
+            </div>
+            <div class="form-group col-md-3 mb-0">
+                {{ form.integumen|as_crispy_field }}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-3 mb-0">
+                {{ form.mukosa|as_crispy_field }}
+            </div>
+            <div class="form-group col-md-3 mb-0">
+                {{ form.turgor|as_crispy_field }}
+            </div>
+            <div class="form-group col-md-3 mb-0">
+                {{ form.edema|as_crispy_field }}
+            </div>
+            <div class="form-group col-md-3 mb-0">
+                {{ form.perdarahan|as_crispy_field }}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-4 mb-0">
+                {{ form.jumlah_perdarahan|as_crispy_field }}
+            </div>
+            <div class="form-group col-md-4 mb-0">
+                {{ form.warna_perdarahan|as_crispy_field }}
+            </div>
+            <div class="form-group col-md-4 mb-0">
+                {{ form.intoksikasi|as_crispy_field }}
+            </div>
+        </div>
+        <hr>
+        <div class="mb-2">Eliminasi</div>
+        <div class="form-row">
+            <div class="form-group col-md-3 mb-0">
+                {{ form.bab|as_crispy_field }}
+            </div>
+            <div class="form-group col-md-3 mb-0">
+                {{ form.xbab|as_crispy_field }}
+            </div>
+            <div class="form-group col-md-3 mb-0">
+                {{ form.kbab|as_crispy_field }}
+            </div>
+            <div class="form-group col-md-3 mb-0">
+                {{ form.wbab|as_crispy_field }}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-3 mb-0">
+                {{ form.bak|as_crispy_field }}
+            </div>
+            <div class="form-group col-md-3 mb-0">
+                {{ form.xbak|as_crispy_field }}
+            </div>
+            <div class="form-group col-md-3 mb-0">
+                {{ form.wbak|as_crispy_field }}
+            </div>
+            <div class="form-group col-md-3 mb-0">
+                {{ form.lbak|as_crispy_field }}
+            </div>
+        </div>
+        <div class="form-row">
+            <button class="btn btn-outline-info d-flex mt-3 btn-prev">Prev</button>
+            <button class="btn btn-outline-success d-flex mt-3 btn-next">Next</button>
+        </div>
+    </div>
+    <div id="holistik" class="form-step mt-5">
+        <div class="form-row">
+            <div class="form-group col-md-3 mb-0">
+                {{ form.psikologis|as_crispy_field }}
+            </div>
+            <div class="form-group col-md-3 mb-0">
+                {{ form.jiwa|as_crispy_field }}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-4 mb-0">
+                {{ form.perilaku|as_crispy_field }}
+            </div>
+            <div class="form-group col-md-4 mb-0">
+                {{ form.sebutkan|as_crispy_field }}
+            </div>
+            <div class="form-group col-md-4 mb-0">
+                {{ form.dilaporkan|as_crispy_field }}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-4 mb-0">
+                {{ form.hubungan|as_crispy_field }}
+            </div>
+            <div class="form-group col-md-4 mb-0">
+                {{ form.tinggal_dengan|as_crispy_field }}
+            </div>
+            <div class="form-group col-md-4 mb-0">
+                {{ form.ket_tinggal|as_crispy_field }}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-3 mb-0">
+                {{ form.budaya|as_crispy_field }}
+            </div>
+            <div class="form-group col-md-3 mb-0">
+                {{ form.ket_budaya|as_crispy_field }}
+            </div>
+            <div class="form-group col-md-3 mb-0">
+                {{ form.pendidikan_pj|as_crispy_field }}
+            </div>
+            <div class="form-group col-md-3 mb-0">
+                {{ form.ket_pendidikan_pj|as_crispy_field }}
+            </div>
+        </div>
+        <div class="form-row">
+            <button class="btn btn-outline-info d-flex mt-3 btn-prev">Prev</button>
+            <button class="btn btn-outline-success d-flex mt-3 btn-next">Next</button>
+        </div>
+    </div>
+</form>
+<div class="row mt-5">
+    <div class="table table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>No Rawat</th>
+                    <th>RM</th>
+                    <th>Nama Pasien</th>
+                    <th>Tanggal</th>
+                    <th>Jam</th>
+                    <th>Poliklinik</th>
+                    <th>Dokter</th>
+                    <th>Aksi</th>
+                </tr>
+            
+            </thead>
+            <tbody>
+                {% for dt in pasien %}
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <a href="#" class="btn btn-warning">Pengkajian Ranap</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+    </div>
+    <div class="pagination">
+        <span class="step-links">
+            {% if pasien.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ pasien.previous_page_number }}">previous</a>
+            {% endif %}
+    
+            <span class="current">
+                Page {{ pasien.number }} of {{ pasien.paginator.num_pages }}.
+            </span>
+    
+            {% if pasien.has_next %}
+                <a href="?page={{ pasien.next_page_number }}">next</a>
+                <a href="?page={{ pasien.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+</div>
+{% endblock content %}
+
+{% block script %}
+
+<script src="{% static 'dist/js/pengkajian.js'%}"></script>
+
+
+{% endblock script %}

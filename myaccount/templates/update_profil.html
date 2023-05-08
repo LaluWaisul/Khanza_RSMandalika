@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+Update alumni
+{% endblock title %}
+
+{% block content %}
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ u_form | crispy }}
+    {{ p_form | crispy }}
+    <div class="p-t-20">
+        <button class="btn btn-primary" type="submit">Submit</button>
+    </div>
+</form>
+
+{% endblock content %}
+
+{% block script %}
+<!-- <script>
+    $("#id_bidang_profesi").change(function () {
+        var url = $("#edituserForm").attr("data-bidang-url");
+        var bidangId = $(this).val();
+
+        $.ajax({
+            url: url,
+            data: {
+                'bidang_profesi': bidangId
+            },
+            success: function (data) {
+                $("#id_profesi").html(data);
+            }
+        })
+    })
+</script> -->
+{% endblock script %}

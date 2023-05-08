@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+Akreditasi
+{% endblock title %}
+
+{% block cardtitle %}
+<strong>Tambah Data {{item.nama}}</strong>
+{% endblock cardtitle %}
+
+{% block content %}
+
+<div class="tab-content m-3 mt-2" id="myTabContent">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{form | crispy}}
+        <input type="submit" value="Simpan" class="btn btn-success">
+    </form>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'mutunasional.html' %}
+{% load crispy_forms_tags %}
+
+{% block form %}
+    
+    <form method="get">
+        <div class="form-group row">
+            {% if bulan %}
+            <div class="col-md-3">{{form.tanggal_isi | as_crispy_field}} </div>
+            {% endif %}
+            <div class="col-md-3">{{form.bangsal | as_crispy_field}}</div>
+            <div class="col-sm-2"><input type="submit" value="search" class="btn btn-primary"></div>
+        </div>
+    </form>
+{% endblock %}

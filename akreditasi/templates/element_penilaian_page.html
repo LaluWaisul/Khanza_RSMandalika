@@ -1,0 +1,141 @@
+{% extends './akreditasi.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/khanza.css' %}">
+{% endblock css %}
+
+{% block cardtitle %}
+<strong>
+    {{item.pokja}}
+    &nbsp; <i class="fas fa-chevron-right"></i> &nbsp;  
+    {{item.nama}}
+</strong>
+{% endblock cardtitle %}
+
+{% block btn_akreditasi %}
+<div class="d-flex justify-content-between">
+    <div class="d-flex flex-row mb-1">
+        {% if idpokja %}
+        <a href="{% url 'akreditasiurls:standar_view' id=idpokja.id %}" class="text-dark"><i class="fas fa-arrow-left ml-2" style="font-size:20px;"></i></a>
+        {% else %}
+        <a href="#" onClick="history.back()" class="text-dark"><i class="fas fa-arrow-left ml-2" style="font-size:20px;"></i></a>
+        {% endif %}
+    </div>
+    <div class="d-flex flex-row-reverse mb-1">
+        <div class="d-flex flex-row-reverse ">
+            <a href="{% url 'akreditasiurls:tambah_element_penilaian_view' id=item.id %}?list={{display}}" class="btn btn-outline-success mr-2" data-toggle="tooltip" data-placement="auto" title="Tambah Folder"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
+        </div>
+        <div class="d-flex flex-row-reverse ">
+            <div class="col-sm-12">
+                <form method="get">
+                    <select class="form-control" id="exampleFormControlSelect1" onchange="this.form.submit()" name="list">
+                        {% if display == "list" %}
+                            <option value={{display}}>List</option>
+                            <option value="icon">Large Icons</option>
+                            <option value="detail">Detail</option>
+                        {% elif display == "icon" %}
+                            <option value={{display}}>Large Icons</option>
+                            <option value="list">List</option>
+                            <option value="detail">Detail</option>
+                        {% elif display == "detail" %}
+                            <option value={{display}}>Detail</option>
+                            <option value="list">List</option>
+                            <option value="icon">Large Icons</option>
+                        {% else %}
+                            <option value="">--- Pilih Tampilan ---</option>
+                            <option value="list">List</option>
+                            <option value="icon">Large Icons</option>
+                            <option value="detail">Detail</option>
+                        {% endif %}
+                    </select>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block akreditasi %}
+<div>
+    {% if display == "list" %}
+    {% if data %}
+    <div class="standar-akreditasi">
+        {% for dt in data %}
+        <div>
+            <a class="p-2 text-dark" href="{% url 'akreditasiurls:kat_element_penilaian_view' id=dt.id %}">
+                <i class="fa fa-folder fa-2x mr-3" style="color:#fca903" aria-hidden="true"></i>
+                <span class="text-center">{{dt.nama}}</span>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+        <div>
+            <center><strong>Data belum ada</strong></center>
+        </div>
+    {% endif %}
+
+    {% elif display == "icon" %}
+    {% if data %}
+    {% for dt in data %}
+    <a class="d-inline-flex flex-column p-5 text-dark" href="{% url 'akreditasiurls:kat_element_penilaian_view' id=dt.id %}">
+        <i class="fa fa-folder fa-10x" style="color:#fca903" aria-hidden="true"></i>
+        <span class="text-center">{{dt.nama}}</span>
+    </a>
+    {% endfor %}
+    {% else %}
+        <div>
+            <center><strong>Data belum ada</strong></center>
+        </div>
+    {% endif %}
+
+    {% elif display == "detail" %}
+    {% if data %}
+    <div class="table table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Element Penilaian</th>
+                    <th>Jumlah Sub Element</th>
+                    <th>Aksi</th>
+                </tr>
+              
+            </thead>
+            <tbody>
+                {% for dt in data %}
+                <tr>
+                    <td>
+                        <a class="d-flex flex-row text-dark" href="{% url 'akreditasiurls:kat_element_penilaian_view' id=dt.id %}">
+                            <i class="fa fa-folder fa-2x mr-3" style="color:#fca903" aria-hidden="true"></i>
+                            <span class="text-center">{{dt.nama}}</span>
+                        </a>
+                    </td>
+                    <td>{{dt.kategorielementpenilaain_set.all|length}}</td>
+                    <td>
+                        <a href="{% url 'akreditasiurls:edit_element_penilaian_view' id=dt.id %}?list={{display}}" class="btn btn-warning">Edit</a>
+                    </td>
+                </tr>
+                {% endfor %}  
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+        <div>
+            <center><strong>Data belum ada</strong></center>
+        </div>
+    {% endif %}
+
+    {% endif %}
+    
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+    $( "#searchdata" ).keyup(function() {
+        alert( "Handler for .keyup() called." );
+    });
+</script>
+{% endblock script %}

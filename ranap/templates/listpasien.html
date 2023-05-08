@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Data Pasien
+{% endblock title %}
+
+{% block css %}
+
+{% endblock css %}
+
+{% block cardtitle %}
+<strong>Dashboard</strong>
+{% endblock cardtitle %}
+
+{% block content %}
+<div class="row">
+    <div class="table table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>No Rawat</th>
+                    <th>RM</th>
+                    <th>Nama Pasien</th>
+                    <th>Jenis Bayar</th>
+                    <th>Kamar</th>
+                    <th>Status Pulang</th>
+                    <th>Diagnosa Akhir</th>
+                    <th>Aksi</th>
+                </tr>
+              
+            </thead>
+            <tbody>
+                {% for dt in pasien %}
+                <tr>
+                    <td>{{dt.no_rawat}}</td>
+                    <td>{{dt.no_rawat.no_rkm_medis}}</td>
+                    <td>{{dt.no_rawat.no_rkm_medis.nm_pasien}}</td>
+                    <td></td>
+                    <td>{{dt.kd_kamar}}</td>
+                    <td>{{dt.stts_pulang}}</td>
+                    <td>{{dt.diagnosa_akhir}}</td>
+                    <td>
+                        <a href="#" class="btn btn-warning">Pengkajian Ranap</a>
+                    </td>
+                </tr>
+                {% endfor %}  
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block script %}
+<script>
+    $(document).ready(function () {
+        $('#kematian').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf'
+            ]
+        });
+    });
+</script>
+
+
+{% endblock script %}

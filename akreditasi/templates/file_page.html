@@ -1,0 +1,301 @@
+{% extends './akreditasi.html' %}
+
+{% block cardtitle %}
+<strong>
+    {{item.element.standar.pokja}}
+    &nbsp; <i class="fas fa-chevron-right"></i> &nbsp;
+    {{item.element.standar}} 
+    &nbsp; <i class="fas fa-chevron-right"></i> &nbsp;
+    {{item.element}} 
+    &nbsp; <i class="fas fa-chevron-right"></i> &nbsp;
+    {{item.nama}}
+</strong>
+{% endblock cardtitle %}
+
+{% block btn_akreditasi %}
+
+<div class="d-flex justify-content-between mb-3">
+    <div class="d-flex flex-row mb-1">
+        {% comment %} <div class="d-flex align-items-center ml-3"> {% endcomment %}
+        {% if idelement %}
+        <a href="{% url 'akreditasiurls:kat_element_penilaian_view' id=idelement.id %}" class="text-dark"><i class="fas fa-arrow-left ml-2" style="font-size:20px;"></i></a>
+        {% else %}
+        <a href="#" onClick="history.back()" class="text-dark"><i class="fas fa-arrow-left ml-2" style="font-size:20px;"></i></a>
+        {% endif %}
+        {% comment %} </div> {% endcomment %}
+        {% comment %} <div class="d-flex align-items-center ml-3">
+            <form>
+                <div class="d-flex flex-row">
+                    <input class="form-control" type="text" name="search" style="padding-right:40px;" id="searchfile" />
+                    <i class="fas fa-search" style="font-size:20px; margin-top:8px; margin-left:-30px; color:#d4cdcc;"></i>
+                </div>
+            </form>
+        </div> {% endcomment %}
+    </div>
+    <div class="d-flex flex-row-reverse mb-1">
+        <div class="d-flex flex-row-reverse ">
+            <a href="{% url 'akreditasiurls:tambah_file' id=kategori %}?list={{display}}" class="btn btn-outline-success mr-2" data-toggle="tooltip" data-placement="auto" title="Tambah Folder"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
+        </div>
+        <div class="d-flex flex-row-reverse ">
+            <div class="col-sm-12">
+                <form method="get">
+                    <select class="form-control" id="exampleFormControlSelect1" onchange="this.form.submit()" name="list">
+                        {% if display == "list" %}
+                            <option value={{display}}>List</option>
+                            <option value="icon">Large Icons</option>
+                            <option value="detail">Detail</option>
+                        {% elif display == "icon" %}
+                            <option value={{display}}>Large Icons</option>
+                            <option value="list">List</option>
+                            <option value="detail">Detail</option>
+                        {% elif display == "detail" %}
+                            <option value={{display}}>Detail</option>
+                            <option value="list">List</option>
+                            <option value="icon">Large Icons</option>
+                        {% else %}
+                            <option value="">--- Pilih Tampilan ---</option>
+                            <option value="list">List</option>
+                            <option value="icon">Large Icons</option>
+                            <option value="detail">Detail</option>
+                        {% endif %}
+                    </select>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block modal %}
+
+{% endblock %}
+
+{% block akreditasi %}
+<div>
+    {% if display == "list" %}
+    <div class="standar-akreditasi">
+        {% if data %}
+        {% for dt in data %}
+        {% if dt.nama %}
+        <div>
+            <a class="d-flex flex-row flex-wrap text-dark modalclass" href="#openModal" data-toggle="modal" data-id={{dt.id}} data-kategori={{kategori}} data-nama={{file.nama}} data-display={{display}}>
+                {% if dt.status == 'Belum Dikerjakan' %}
+                <i class="far fa-file-alt fa-2x ml-3 mb-3 mt-2" style="color:#f74205"></i>
+                <span class="text-center ml-2 mb-3  mt-2" style="color:#f74205">{{dt.nama}}</span>
+                {% elif dt.status == 'Proses' %}
+                <i class="far fa-file-alt fa-2x ml-3 mb-3 mt-2" style="color:#f7e305"></i>
+                <span class="text-center ml-2 mb-3 mt-2" style="color:#f7e305">{{dt.nama}}</span>
+                {% elif dt.status == 'Selesai' %}
+                <i class="far fa-file-alt fa-2x ml-3 mb-3 mt-2" style="color:#05f72d"></i>
+                <span class="text-center ml-2 mb-3 mt-2" style="color:#05f72d">{{dt.nama}}</span>
+                {% endif %}
+                
+            </a>
+        </div>
+        {% else %}
+        <div>
+            <a class="d-flex flex-row flex-wrap text-dark modalclass" href="#" data-toggle="modal" data-id={{dt.id}}>
+                <span class="text-center">File Belum di Upload</span>
+            </a>
+        </div>
+        {% endif %}
+        {% endfor %}
+        {% else %}
+        <div>
+            <center><strong>Data belum ada</strong></center>
+        </div>
+    {% endif %}
+    </div>
+    {% elif display == "icon" %}
+    {% if data %}
+    {% for dt in data %}
+    {% if dt.nama %}
+    <a class="d-inline-flex flex-column p-5 text-dark modalclass" href="#openModal" data-toggle="modal" data-id={{dt.id}} data-kategori={{kategori}} data-nama={{file.nama}} data-display={{display}}>
+        {% if dt.status == 'Belum Dikerjakan' %}
+        <i class="far fa-file-alt fa-10x mb-2" style="color:#f74205"></i>
+        <span class="text-center" style="color:#f74205">{{dt.nama}}</span>
+        {% elif dt.status == 'Proses' %}
+        <i class="far fa-file-alt fa-10x mb-2" style="color:#f7e305"></i>
+        <span class="text-center" style="color:#f7e305">{{dt.nama}}</span>
+        {% elif dt.status == 'Selesai' %}
+        <i class="far fa-file-alt fa-10x mb-2" style="color:#05f72d"></i>
+        <span class="text-center" style="color:#05f72d">{{dt.nama}}</span>
+        {% endif %}
+        
+    </a>
+    {% else %}
+        <div>
+            <a class="d-flex flex-row flex-wrap text-dark modalclass" href="#">
+                <span class="text-center">File Belum di Upload</span>
+            </a>
+        </div>
+    {% endif %}
+    {% endfor %}    
+    {% else %}
+        <div>
+            <center><strong>Data belum ada</strong></center>
+        </div>
+    {% endif %}
+    {% elif display == "detail" %}
+    <div class="table table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nama File</th>
+                    <th>Status</th>
+                    <th>Tanggal Upload</th>
+                    <th>Tanggal Update</th>
+                    <th>Aksi</th>
+                </tr>
+              
+            </thead>
+            <tbody>
+                {% if data %}
+                {% for dt in data %}
+                <tr>
+                    <td>
+                        {% if dt.nama %}
+                        <div class="d-flex flex-row">
+                            {% if dt.status == 'Belum Dikerjakan' %}
+                            <i class="far fa-file-alt fa-2x mr-3" style="color:#f74205"></i>
+                            <span class="text-center" style="color:#f74205">{{dt.nama}}</span>
+                            {% elif dt.status == 'Proses' %}
+                            <i class="far fa-file-alt fa-2x mr-3" style="color:#f7e305"></i>
+                            <span class="text-center" style="color:#f7e305">{{dt.nama}}</span>
+                            {% elif dt.status == 'Selesai' %}
+                            <i class="far fa-file-alt fa-2x mr-3" style="color:#05f72d"></i>
+                            <span class="text-center" style="color:#05f72d">{{dt.nama}}</span>
+                            {% endif %}
+                        </div>
+                        {% else %}
+                        <div>
+                            <a class="d-flex flex-row flex-wrap text-dark modalclass" href="#" >
+                                <span class="text-center">File Belum di Upload</span>
+                            </a>
+                        </div>
+                        {% endif %}
+                    </td>
+                    <td>{{dt.status}}</td>
+                    <td>{{dt.created_at}}</td>
+                    <td>{{dt.updated_at}}</td>
+                    <td>
+                        <a href="{% url 'akreditasiurls:edit_file' id=dt.id %}?list={{display}}" class="btn btn-outline-warning"><i class="far fa-edit"></i></a>
+                        <a href="{% url 'akreditasiurls:download_file_class' id=dt.id %}" class="btn btn-outline-primary"><i class="fas fa-cloud-download-alt"></i></a>
+                        <a href="{% url 'akreditasiurls:delete_file' kategori=kategori id=dt.id %}?list={{display}}" class="btn btn-outline-danger"><i class="fas fa-trash-alt"></i></a>
+                    </td>
+                </tr>
+                {% endfor %}  
+                {% else %}
+                    <div>
+                        <tr><td colspan=5><center><strong>Data belum ada</strong></center></td></tr>
+                    </div>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+    
+</div>
+
+<div class="modal fade" id="openModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Dokumen Akreditasi</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <div id="dataID">
+
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Dokumen Akreditasi</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <div id="deleteID">
+
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+{% endblock %}
+
+{% block script %}
+<script>
+    
+    $(document).on("click", ".modalclass", function () {
+        var myDataId = $(this).data('id');
+        var kategori = $(this).data('kategori');
+        var display = $(this).data('display');
+       
+        $.get(`/akreditasi/apistandarfileakreditasi/${myDataId}/`, function(data, status){
+            $("#dataID").html(
+                `<center>Silahkan klik tombol sesuai kebutuhan anda untuk file
+                    <br><h3>${data.nama}</h3> <br>
+                    <a href="/akreditasi/editfile/${data.id}/?list={{display}}" class="btn btn-outline-warning"><i class="far fa-edit"></i></a>
+                    <a href="/akreditasi/downloadfile/${data.id}/" class="btn btn-outline-primary"><i class="fas fa-cloud-download-alt"></i></a>
+                    <a href="#deleteModal" id="deletebuttonmodal" class="btn btn-outline-danger" data-toggle="modal" data-id=${data.id} data-kategori=${kategori} data-display=${display} data-dismiss="modal"><i class="fas fa-trash-alt"></i></a>
+                </center>`
+                
+            );
+            
+          });       
+        //$(".modal-body #dataID").html( myDataId );
+        
+    });
+    
+</script>
+
+<script>
+    
+    $(document).on("click", "#deletebuttonmodal", function () {
+        var myDataId = $(this).data('id');
+        var kategori = $(this).data('kategori');
+        var display = $(this).data('display');
+        console.log('ini display: ', display)
+        
+        $("#deleteID").html(
+            `<form method="POST" action='/akreditasi/deletefile/${kategori}/${myDataId}/?list=${display}'>
+                {% csrf_token %}
+                <h3>Apakah benar anda mau menghapus data ini?</h3>
+                <button type="submit" class="btn btn-danger">Hapus</button>
+            </form>`
+            
+        );        
+    });
+    
+</script>
+
+<script>
+    $( "#searchdata" ).keyup(function() {
+        var datainput = $(this).val();
+        //console.log(datainput);
+        $.get(`/akreditasi/searchfile/?nama=${datainput}`, function(data, status){
+            $("#dataID").html(``);
+            //console.log(data);
+            
+          });
+    });
+</script>
+{% endblock script %}

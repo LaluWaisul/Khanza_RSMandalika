@@ -1,0 +1,55 @@
+{% extends './data.html' %}
+
+{% block cardtitle %}
+<strong>Data Bangsal/Unit</strong>
+{% endblock cardtitle %}
+
+{% block btn_authbangsal %}
+<a href="{% url 'auth_bangsal:tambah_bangsalview' %}" class="btn btn-info mb-3">Tambah/Edit Data</a>
+{% endblock %}
+
+{% block bangsal %}
+
+<h4 style="margin-top:20px;">Daftar Bangsal/Unit Rumah Sakit Mandalika</h4>
+        <div class="table table-responsive">
+            <table class="table" id="kematian">
+                <thead>
+                    <tr>
+                        <th>Departement</th>
+                        <th>Bidang</th>
+                        <th>Bangsal/Unit</th>
+                        <th>Aksi</th>
+                    </tr>
+                  
+                </thead>
+                <tbody>
+                    {% for item in bangsal %}
+                    <tr>
+                        <td>{{item.bidang.dep.nama}}</td>
+                        <td>{{item.bidang.nama}}</td>
+                        <td style="font-weight:bold">{{item.nama}}</td>
+                        <td>
+                            <a href={% url 'auth_bangsal:detail_bangsalview' kd=item.kd_bangsal %} class="btn btn-warning">Edit</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+{% endblock %}
+
+{% block script %}
+<script>
+    $(document).ready(function () {
+        $('#kematian').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf'
+            ]
+        });
+    });
+</script>
+
+
+{% endblock script %}

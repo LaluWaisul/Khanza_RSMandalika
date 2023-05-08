@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Ganti password
+{% endblock title %}
+
+{% block content %}
+<div class="row">
+    <h3>Ganti Password...</h3>
+    <div class="col-md-12">
+        <form method="post">
+            {% csrf_token %}
+            {{form.as_p}}
+            <button type="submit" class="btn btn-secondary">Ganti Password</button>
+        </form>
+    </div>
+</div>
+{% endblock content %}

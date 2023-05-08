@@ -1,0 +1,53 @@
+{% extends './data.html' %}
+
+{% block cardtitle %}
+<strong>Data Bidang/Instalasi</strong>
+{% endblock cardtitle %}
+
+{% block btn_authbangsal %}
+<a href="{% url 'auth_bangsal:tambah_bidangview' %}" class="btn btn-info mb-3">Tambah/Edit Data</a>
+{% endblock %}
+
+{% block bangsal %}
+
+<h4 style="margin-top:20px;">Daftar Bidang/Instalasi Rumah Sakit Mandalika</h4>
+        <div class="table table-responsive">
+            <table class="table" id="kematian">
+                <thead>
+                    <tr>
+                        <th>Departement</th>
+                        <th>Bidang</th>
+                        <th>Aksi</th>
+                    </tr>
+                  
+                </thead>
+                <tbody>
+                    {% for item in bidang %}
+                    <tr>
+                        <td>{{item.dep.nama}}</td>
+                        <td>{{item.nama}}</td>
+                        <td>
+                            <a href={% url 'auth_bangsal:detail_bidangview' id=item.id %} class="btn btn-warning">Edit</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+{% endblock %}
+
+{% block script %}
+<script>
+    $(document).ready(function () {
+        $('#kematian').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf'
+            ]
+        });
+    });
+</script>
+
+
+{% endblock script %}

@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block title %}
+Mutu Nasional
+{% endblock title %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/khanza.css' %}">
+{% endblock css %}
+
+{% block cardtitle %}
+<strong>Mutu Nasional</strong>
+{% endblock cardtitle %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        {% block form %}
+
+        {% endblock %}
+        {% comment %} <a href="#" class="btn btn-info mb-3">Export to PDF</a> {% endcomment %}
+        {% if bulan %}
+        <a href="{% url 'auth_mutu:tambah_datamutu' tanggal_isi=tanggal %}?bangsal={{bangsal.kd_bangsal}}" class="btn btn-info mb-3">Tambah / Edit Data</a>
+        {% endif %}
+    </div>
+</div>
+{% if bangsal %}
+    <h3>Mutu Indikator Bangsal/Unit {{bangsal}}</h3>
+    {% else %}
+    <h3>Mutu Indikator Rumah Sakit Mandalika Tahun {{tanggal.year}}</h3>
+{% endif %}
+<div class="row mt-2">
+    <div class="col-md-6 align-middle">
+        {% if bangsal %}
+        <div class="form-group row">
+            <div class="col-md-4 font-weight-bold">Departemen</div>
+            <div class="col-md-8">{{dep}}</div>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-4 font-weight-bold">Bidang</div>
+            <div class="col-md-8">{{bidang}}</div>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-4 font-weight-bold">Bangsal/Unit</div>
+            <div class="col-md-8">{{bangsal}}</div>
+        </div>
+        {% endif %}
+        {% if bulan %}
+        <div class="form-group row">
+            <div class="col-md-4 font-weight-bold">Bulan</div>
+            <div class="col-md-8">{{bulan}}</div>
+        </div>
+        {% endif %}
+        <div class="form-group row">
+            <div class="col-md-4 font-weight-bold">Tahun</div>
+            <div class="col-md-8">{{tahun}}</div>
+        </div>
+
+    </div>
+
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="table table-responsive">
+            {% if data %}
+            {{data|safe}}
+            {% else %}
+            <h3>Belum ada data untuk tanggal ({{tanggal}})</h3>
+            {% endif %}
+        </div>
+    </div>
+    <div class="col-md-12 mt-3">
+        <div class="row">
+            <div class="col-md-6">
+                <fieldset class="scheduler-border m-2">
+                    <legend class="scheduler-border">Data Capaian Mutu</legend>
+                    <a class="btn btn-dark mt-1" href="{% url 'auth_mutu:data-mutu' %}">Data Capaian PerHari</a>
+                    <a class="btn btn-success mt-1" href="{% url 'auth_mutu:data-mutu-tahun' %}">Data Capaian PerBulan</a>
+                </fieldset>
+            </div>
+            <div class="col-md-6">
+                <fieldset class="scheduler-border m-2">
+                    <legend class="scheduler-border">Grafik Capaian Mutu Series</legend>
+                    <a class="btn btn-secondary mt-1" href="{% url 'auth_mutu:chart_series_perhari_view' charttype=charttype tanggal_isi=tanggal %}">Grafik Capaian Harian</a>
+                    <a class="btn btn-info mt-1" href="{% url 'auth_mutu:chart_series_perbulan_view' charttype=charttype tanggal_isi=tanggal %}">Grafik Capaian Bulanan</a>
+                </fieldset>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                
+                <fieldset class="scheduler-border m-2">
+                    <legend class="scheduler-border">Grafik Capaian Mutu</legend>
+                    <a class="btn btn-warning mt-1" href="{% url 'auth_mutu:chart_view' charttype=charttype tanggal_isi=tanggal %}">Grafik Capaian Per Indikator Mutu</a>
+                    <a class="btn btn-primary mt-1" href="{% url 'auth_mutu:chart_instalasi_view' charttype=charttype tanggal_isi=tanggal %}">Grafik Capaian Per Instalasi</a>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block script %}
+<script>
+    $(document).ready(function () {
+        $('#kematian').DataTable({
+            dom: 'Blfrtip',
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf'
+            ],
+            lengthMenu: [
+                [10, 25, 50, -1],
+                [10, 25, 50, 'All'],
+            ],
+        });
+    });
+</script>
+
+
+{% endblock script %}

@@ -1,0 +1,29 @@
+{% extends 'pasien_base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+| Booking Registrasi
+{% endblock title %}
+
+{% block css %}
+
+{% endblock css %}
+
+{% block cardtitle %}
+<strong></strong>
+{% endblock cardtitle %}
+
+{% block content %}
+
+<div class="container mt-3 mb-3">
+    <h3 class="mb-5 text-center">Registrasi Pasien Online</h3>
+    <form method="post">
+        {% csrf_token %}
+        {{form | crispy}}
+           
+        <input type="submit" value="Simpan" class="btn btn-success">
+    </form>
+
+</div>
+
+{% endblock %}

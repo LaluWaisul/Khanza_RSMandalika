@@ -1,0 +1,62 @@
+{% extends 'auth_base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+Register
+{% endblock title %}
+
+{% block content %}
+<div class="container mb-3">
+  <div class="row d-flex justify-content-md-center">
+    <div class="col-md-6">
+      <div style="margin-top:850px">
+        <!-- <div class="col-md-10"> -->
+        <div class="register-logo">
+          <a href="#"><b>SIM-RS Mandalika </b></a>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <p class="login-box-msg">Register as a User</p>
+
+            <form method="post" enctype="multipart/form-data">
+              {% csrf_token %}
+              {{ form | crispy }}
+              <div class="row">
+                <div class="col-4">
+                  <button type="submit" class="btn btn-primary btn-block">Register</button>
+                </div>
+                <!-- /.col -->
+              </div>
+            </form>
+
+            <p>
+              Sudah punya akun? <a href="{% url 'myaccount:login' %}" class="text-center">Login disini!</a>
+            </p>
+          </div>
+          <!-- /.form-box -->
+        </div><!-- /.card -->
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}
+
+{% block script %}
+<script>
+  $('#div_id_kabupaten').hide(); // destination_free field
+  var kab = document.getElementById("id_kabupaten");
+
+  $('#id_kedudukan').on('change', function () {
+    var optionSelected = $("option:selected", this);
+    var valueSelected = this.value;
+    if (valueSelected == 'Kabupaten') {
+      $('#div_id_kabupaten').show();
+      kab.attributes["required"] = "required";
+    } else {
+      $('#div_id_kabupaten').hide();
+    }
+    return false;
+  });
+</script>
+{% endblock script %}

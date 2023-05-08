@@ -1,0 +1,34 @@
+{% extends './data.html' %}
+
+{% block cardtitle %}
+<strong>Data Departement</strong>
+{% endblock cardtitle %}
+
+{% block btn_authbangsal %}
+<a href="{% url 'auth_bangsal:tambah_departementview' %}" class="btn btn-info mb-3">Tambah/Edit Data</a>
+{% endblock %}
+
+{% block bangsal %}
+<h4 style="margin-top:20px;">Daftar Departemen Rumah Sakit Mandalika</h4>
+    <div class="table table-responsive">
+        <table class="table" id="kematian">
+            <thead>
+                <tr>
+                    <th>Nama Departemen</th>
+                    <th>Aksi</th>
+                </tr>
+                
+            </thead>
+            <tbody>
+                {% for item in dep %}
+                <tr>
+                    <td>{{item.nama}}</td>
+                    <td>
+                        <a href={% url 'auth_bangsal:detail_departementview' id=item.id %} class="btn btn-warning">Edit</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

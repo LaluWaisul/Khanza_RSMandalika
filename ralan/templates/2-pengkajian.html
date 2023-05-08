@@ -1,0 +1,169 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+Booking Registrasi
+{% endblock title %}
+
+{% block css %}
+{% comment %} <link rel="stylesheet" href="{% static 'simrs/simrsstyle.css'%}"> {% endcomment %}
+{% endblock css %}
+
+{% block navigation %}
+<li class="nav-item d-none d-sm-inline-block">
+    <a href="index3.html" class="nav-link">pasien</a>
+</li>
+<li class="nav-item d-none d-sm-inline-block">
+    <a href="#" class="nav-link">Pengkajian</a>
+</li>
+<li class="nav-item d-none d-sm-inline-block">
+    <a href="#" class="nav-link">Pemeriksaan</a>
+</li>
+<li class="nav-item d-none d-sm-inline-block">
+    <a href="#" class="nav-link">Tindakan</a>
+</li>
+{% endblock navigation %}
+
+{% block titlepage %}
+Halaman Registrasi
+{% endblock titlepage %}
+
+{% block content %}
+
+<div class="container mt-3 mb-3">
+    <form method="post">
+        {% csrf_token %}
+        {% comment %} {{form | crispy}} {% endcomment %}
+        {{ form.non_field_errors }}
+        <div class="row" style="overflow-y:auto; height:300px;">
+            <div class="col-md-6">
+                <div class="form-group">
+                    {{ form.no_reg.errors }}
+                    <label for="{{ form.no_reg.id_for_label }}">Nomor Registrasi:</label>
+                    {{ form.no_reg }}
+                </div>
+                <div class="form-group">
+                    {{ form.no_rawat.errors }}
+                    <label for="{{ form.no_rawat.id_for_label }}">Nomor Rawat:</label>
+                    {{ form.no_rawat }}
+                </div>
+                <div class="form-group">
+                    {{ form.tgl_registrasi.errors }}
+                    <label for="{{ form.tgl_registrasi.id_for_label }}">Tanggal Registrasi / Jam:</label>
+                    <div class="row">
+                    {{ form.tgl_registrasi }} {{ form.jam_reg }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    {{ form.kd_dokter.errors }}
+                    <label for="{{ form.kd_dokter.id_for_label }}">Dokter:</label>
+                    {{ form.kd_dokter }}
+                </div>
+                <div class="form-group">
+                    {{ form.no_rkm_medis.errors }}
+                    <label for="{{ form.no_rkm_medis.id_for_label }}">Pasien:</label>
+                    <div class="row">
+                    {{ form.no_rkm_medis }} <button class="btn btn-outline-primary"><i class="fas fa-user-plus"></i></button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    {{ form.kd_poli.errors }}
+                    <label for="{{ form.kd_poli.id_for_label }}">Poli:</label>
+                    {{ form.kd_poli }}
+                </div>
+                
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    {{ form.p_jawab.errors }}
+                    <label for="{{ form.p_jawab.id_for_label }}">Penanggungjawab:</label>
+                    {{ form.p_jawab }}
+                </div>
+                <div class="form-group">
+                    {{ form.almt_pj.errors }}
+                    <label for="{{ form.almt_pj.id_for_label }}">Alamat:</label>
+                    {{ form.almt_pj }}
+                </div>
+                <div class="form-group">
+                    {{ form.hubunganpj.errors }}
+                    <label for="{{ form.hubunganpj.id_for_label }}">Hubungan dengan pasien:</label>
+                    {{ form.hubunganpj }}
+                </div>
+                <div class="form-group">
+                    {{ form.biaya_reg.errors }}
+                    <label for="{{ form.biaya_reg.id_for_label }}">Biaya Registrasi:</label>
+                    {{ form.biaya_reg }}
+                </div>
+                
+                <div class="form-group">
+                    {{ form.stts_daftar.errors }}
+                    <label for="{{ form.stts_daftar.id_for_label }}">Status Daftar:</label>
+                    {{ form.stts_daftar }}
+                </div>
+               
+                <div class="form-group">
+                    {{ form.kd_pj.errors }}
+                    <label for="{{ form.kd_pj.id_for_label }}">Penanggungjawab:</label>
+                    {{ form.kd_pj }}
+                </div>
+                
+            </div>
+            <input type="submit" value="Simpan" class="btn btn-success">
+        </div>
+    </form>
+    <div class="row mt-5">
+        <div class="table table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>No Rawat</th>
+                        <th>RM</th>
+                        <th>Nama Pasien</th>
+                        <th>Tanggal</th>
+                        <th>Jam</th>
+                        <th>Poliklinik</th>
+                        <th>Dokter</th>
+                        <th>Aksi</th>
+                    </tr>
+                  
+                </thead>
+                <tbody>
+                    {% for dt in pasien %}
+                    <tr>
+                        <td>{{dt.no_rawat}}</td>
+                        <td>{{dt.no_rkm_medis}}</td>
+                        <td>{{dt.no_rkm_medis.nm_pasien}}</td>
+                        <td>{{dt.tgl_registrasi}}</td>
+                        <td>{{dt.jam_reg}}</td>
+                        <td>{{dt.kd_poli}}</td>
+                        <td>{{dt.kd_dokter}}</td>
+                        <td>
+                            <a href="#" class="btn btn-warning">Pengkajian Ranap</a>
+                        </td>
+                    </tr>
+                    {% endfor %}  
+                </tbody>
+            </table>
+        </div>
+        <div class="pagination">
+            <span class="step-links">
+                {% if pasien.has_previous %}
+                    <a href="?page=1">&laquo; first</a>
+                    <a href="?page={{ pasien.previous_page_number }}">previous</a>
+                {% endif %}
+        
+                <span class="current">
+                    Page {{ pasien.number }} of {{ pasien.paginator.num_pages }}.
+                </span>
+        
+                {% if pasien.has_next %}
+                    <a href="?page={{ pasien.next_page_number }}">next</a>
+                    <a href="?page={{ pasien.paginator.num_pages }}">last &raquo;</a>
+                {% endif %}
+            </span>
+    </div>
+
+</div>
+
+{% endblock %}
