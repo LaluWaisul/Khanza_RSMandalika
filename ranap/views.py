@@ -41,5 +41,13 @@ class ListPasien(View):
             'pasien': pasien
         }
         return render(request, 'listpasien.html', context)
+
+class pengkajian(View):
+    def get(self, request):
+        contex = {
+
+        }
+        return render(request, 'pengkajian.html', contex)
     
+
 
