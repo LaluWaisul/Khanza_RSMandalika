@@ -1,12 +1,16 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse
 from django.views import View
 from django.core.paginator import Paginator
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from django import forms
 
-from .models import KamarInap
+from .models import KamarInap,PemeriksaanRanap
 from .serializers import KamarInapSerializer
+
+from .form import form_serach,formPenanganan
 
 # Create your views here.
 
@@ -37,17 +41,39 @@ class ListPasien(View):
     def get(self, request):
         pasien = KamarInap.objects.all()
         paginator = Paginator(pasien, 25)
+        SearchForm = form_serach
+
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        
+        page_obj = paginator.get_page(page_number)
+
+        data = request.GET.get('data')
+        form = SearchForm()
+        if data:
+            pasien = KamarInap.objects.filter(
+                no_rawat= data
+            ) | KamarInap.objects.filter(
+                no_rawat__no_rkm_medis__no_rkm_medis__icontains=data
+            ) | KamarInap.objects.filter(
+                no_rawat__no_rkm_medis__nm_pasien__icontains=data
+            ) | KamarInap.objects.filter(
+                kd_kamar=data)
+            paginator = Paginator(pasien, 25)
+            page_number = request.GET.get('page')
+            page_obj = paginator.get_page(page_number)
+
         context ={
-            'pasien': pasien
+            'pasien':page_obj,
+            'form':form,
+            'data':data,
+            'ranap':'active',
         }
         return render(request, 'listpasien.html', context)
 
-class pengkajian(View):
+class TindakanRanap(View):
     def get(self, request):
-        contex = {
-
+        context = {
+            # form = formPenanganan
         }
-        return render(request, 'pengkajian.html', contex)
-    
-
-
+        return render(request, 'tindakan.html',context)

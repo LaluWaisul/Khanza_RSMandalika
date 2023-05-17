@@ -3,7 +3,7 @@ from ralan.models import RegPeriksa
 from .models import PenilaianAwalKeperawatanIgd
 
 
-class SearchForm(forms.Form):
+class SearchForm(forms.Form): 
     data = forms.CharField(label='')
 
 
@@ -11,7 +11,7 @@ class PengkajianKeperawatanForm(forms.ModelForm):
     class Meta:
         model=PenilaianAwalKeperawatanIgd
         fields = "__all__"
-    
+     
     def __init__(self, *args, **kwargs):
         super(PengkajianKeperawatanForm, self).__init__(*args, **kwargs)
         self.fields['tanggal'].widget = forms.TextInput(attrs={'type':'date'})

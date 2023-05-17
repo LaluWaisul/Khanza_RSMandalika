@@ -9,7 +9,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
 
-from ralan.models import RegPeriksa
+from ralan.models import RegPeriksa 
 from ralan.serializers import RegPeriksaSerializer
 from .forms import SearchForm, PengkajianKeperawatanForm
 from .models import PenilaianAwalKeperawatanIgd

@@ -474,7 +474,7 @@ class KamarInap(models.Model):
     lama = models.FloatField(blank=True, null=True)
     ttl_biaya = models.FloatField(blank=True, null=True)
     stts_pulang = models.CharField(max_length=23)
-
+ 
     class Meta:
         managed = False
         db_table = 'kamar_inap'

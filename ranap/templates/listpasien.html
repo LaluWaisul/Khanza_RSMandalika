@@ -1,18 +1,33 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}
 Data Pasien
 {% endblock title %}
 
 {% block css %}
-
+<link rel="stylesheet" href="{% static 'dist/css/pasien.css'%}">
 {% endblock css %}
 
-{% block cardtitle %}
-<strong>Dashboard</strong>
-{% endblock cardtitle %}
+{% block titlepage %}
+<strong>Data Pasien Rawat Inap</strong>
+{% endblock titlepage %}
 
 {% block content %}
+<div id="pasien">
+    <form @submit.prevent="getData">
+        <div class="pasien-form">
+            {% csrf_token %}
+            {{form }}
+            <button type="submit" class="btn btn-outline-info">Cari</button>
+        </div> 
+        {% if data %}
+        <div class="selected-data">Data filter: <span class="data" style="font-weight:bold; margin-left:10px;">  {{data}} <a href="{% url 'ranap:listpasien' %}"><i class="fas fa-times close"></i></a> </span></div>
+        {% endif %}
+    </form>
+{% comment %} 
+{% include "snippets/searchPasien.html" %} {% endcomment %}
+
 <div class="row">
     <div class="table table-responsive">
         <table class="table">
@@ -40,13 +55,30 @@ Data Pasien
                     <td>{{dt.stts_pulang}}</td>
                     <td>{{dt.diagnosa_akhir}}</td>
                     <td>
-                        <a href="#" class="btn btn-warning">Pengkajian Ranap</a>
+                        <a href="{% url 'ranap:tindakan'%}" class="btn btn-warning">Tindakan</a>
                     </td>
                 </tr>
                 {% endfor %}  
             </tbody>
         </table>
     </div>
+    {% comment %} <div class="pagination">
+        <span class="step-links">
+            {% if pasien.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ pasien.previous_page_number }}">previous</a>
+            {% endif %}
+    
+            <span class="current">
+                Page {{ pasien.number }} of {{ pasien.paginator.num_pages }}.
+            </span>
+    
+            {% if pasien.has_next %}
+                <a href="?page={{ pasien.next_page_number }}">next</a>
+                <a href="?page={{ pasien.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div> {% endcomment %}
 </div>
 
 {% endblock content %}
